@@ -22,7 +22,10 @@ angular.module('MeGuiaApp.services', [])
 		var _data = data;
 
 		var dataAsJson = function() {
-			return JSON.parse(_data);
+			try {
+				return JSON.parse(_data)
+			} catch (err) {};
+			return null;
 		};
 
 		var result = {

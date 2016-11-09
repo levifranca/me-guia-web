@@ -28,8 +28,8 @@ angular.module('MeGuiaApp.controllers', [])
  
 }])
 
-.controller('homeController', ['$scope', function($scope) {
-	
+.controller('homeController', ['$scope', 'localStorageService', function($scope, localStorageService) {
+	$scope.nome = localStorageService.get('loggedUser').nome;
 }])
 
 ;

@@ -1,4 +1,5 @@
 angular.module('MeGuiaApp', [
+	'MeGuiaApp.components',
 	'MeGuiaApp.controllers',
 	'MeGuiaApp.services',
 	'ngRoute',
@@ -20,4 +21,21 @@ config(['$httpProvider', '$routeProvider', 'localStorageServiceProvider', functi
 	//.when("/drivers/:id", {templateUrl: "partials/driver.html", controller: "driverController"})
 	.otherwise({redirectTo: '/login'})
 	;
-}]);
+}])
+.run( function($rootScope, localStorageService, $location) {
+
+	// register listener to watch route changes
+	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
+		var loggedUser = localStorageService.get('loggedUser');
+		var goingToLoginPage = next.templateUrl == "partials/login.html";
+
+		if ( !loggedUser && !goingToLoginPage ) {
+			$location.path( "/login" );
+		}
+
+		if ( loggedUser && goingToLoginPage ) {
+			$location.path( "/home" );
+		}
+	});
+})
+;

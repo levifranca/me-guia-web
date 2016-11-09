@@ -1,10 +1,12 @@
 <div>
-	<label>Login:</label>
-	<input type="text" name="login" ng-model="login">
-	
-	<label>Senha:</label>
-	<input type="password" name="pass" ng-model="pass">
+	<form>
+		<label>Login:</label>
+		<input type="text" name="login" ng-model="login">
+		
+		<label>Senha:</label>
+		<input type="password" name="pass" ng-model="pass">
 
-	<input type="button" name="loginButton" value="Entrar" ng-click="signIn()">
-	<span>{{errorMessage}}</span>
+		<input type="submit" name="loginButton" value="Entrar" ng-click="signIn()" >
+		<span>{{errorMessage}}</span>
+	</form>
 </div>
