@@ -2,11 +2,17 @@ angular.module('MeGuiaApp', [
 	'MeGuiaApp.controllers',
 	'MeGuiaApp.services',
 	'ngRoute',
-	'base64'
+	'base64',
+	'LocalStorageModule'
 ]).
-config(['$httpProvider', '$routeProvider', function($httpProvider, $routeProvider) {
-	//var auth = $base64.encode("foo:bar");
-    $httpProvider.defaults.headers.common['Authorization'] = '';
+config(['$httpProvider', '$routeProvider', 'localStorageServiceProvider', function($httpProvider, $routeProvider, localStorageServiceProvider) {
+	$httpProvider.defaults.headers.common['Authorization'] = '';
+
+	localStorageServiceProvider
+	.setPrefix('meGuiaApp')
+	.setStorageType('localStorage')
+    .setNotify(true, true)
+	;
 	
 	$routeProvider
 	.when("/login", {templateUrl: "partials/login.html", controller: "loginController"})

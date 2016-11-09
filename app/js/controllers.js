@@ -3,11 +3,29 @@ angular.module('MeGuiaApp.controllers', [])
 
 	$scope.signIn = function() {
 
-		meGuiaAPIservice.test($scope.login, $scope.senha);
+
+
+		var success = function(result) {
+			$scope.errorMessage = "";
+			console.log(result);
+
+			$location.url('/home');
+		};
+
+		var fail = function(data) {
+			console.log(data);
+			if (data.httpStatus >= 500) {
+				$scope.errorMessage = "Erro inexperado no sistema.";
+			} else {
+				$scope.errorMessage = "Login/senha incorretos.";
+			}
+		};
+
+		meGuiaAPIservice.login($scope.login, $scope.pass, success, fail);
 
 		//$location.url('/home');
 	};
-
+ 
 }])
 
 .controller('homeController', ['$scope', function($scope) {

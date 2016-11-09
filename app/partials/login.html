@@ -3,7 +3,8 @@
 	<input type="text" name="login" ng-model="login">
 	
 	<label>Senha:</label>
-	<input type="password" name="senha" ng-model="senha">
+	<input type="password" name="pass" ng-model="pass">
 
-	<input type="button" name="loginButton" value="Login" ng-click="signIn()">
+	<input type="button" name="loginButton" value="Entrar" ng-click="signIn()">
+	<span>{{errorMessage}}</span>
 </div>
