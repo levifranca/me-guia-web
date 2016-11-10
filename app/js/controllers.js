@@ -14,6 +14,9 @@ angular.module('MeGuiaApp.controllers', [])
 
 		var fail = function(data) {
 			console.log(data);
+
+			$scope.pass = "";
+
 			if (data.httpStatus >= 500) {
 				$scope.errorMessage = "Erro inexperado no sistema.";
 			} else {
@@ -23,7 +26,6 @@ angular.module('MeGuiaApp.controllers', [])
 
 		meGuiaAPIservice.login($scope.login, $scope.pass, success, fail);
 
-		//$location.url('/home');
 	};
  
 }])

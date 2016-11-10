@@ -1,4 +1,4 @@
-function MeGuiaHeaderController(localStorageService) {
+function MeGuiaHeaderController(localStorageService, $location) {
 	var _ctrl = this;
 	//var _loggedUser = undefined;
 
@@ -9,12 +9,17 @@ function MeGuiaHeaderController(localStorageService) {
 	_ctrl.$onInit = function() {
 		_ctrl.loggedUser = localStorageService.get('loggedUser');
 	};
+
+	_ctrl.loggoff = function() {
+		localStorageService.remove('loggedUser');
+		$location.url('/');
+	};
 }
 
 angular.module('MeGuiaApp.components', [])
 .component('meGuiaHeader', {
 	templateUrl: 'components/header.html',
-	controller: ['localStorageService', MeGuiaHeaderController],
+	controller: ['localStorageService', '$location', MeGuiaHeaderController],
 	bindings: {
 		loggedUser: '<'
 	}
