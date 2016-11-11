@@ -12,6 +12,7 @@ function MeGuiaHeaderController(localStorageService, $location) {
 
 	_ctrl.loggoff = function() {
 		localStorageService.remove('loggedUser');
+		localStorageService.remove('userPassBase64');
 		$location.url('/');
 	};
 }

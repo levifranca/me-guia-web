@@ -1,0 +1,37 @@
+<div>
+	<input placeholder="Placeholder" id="busca" type="text" class="validate" ng-model="query">
+	<a class="waves-effect waves-light btn" href="" ng-click="searchQuery=query">Buscar</a>
+	<p>
+      <input type="checkbox" class="filled-in" id="onlyActives" checked="checked" ng-model="onlyActives" />
+      <label for="somente-ativos">Somentes Ativos</label>
+    </p>
+    <a class="waves-effect waves-light btn" href="">Adicionar novo</a>
+
+</div>
+
+<div>
+	<table ng-hide="errorMessage">
+		<thead>
+			<tr>
+				<th data-field="nome">Nome</th>
+				<th data-field="endereco_mac">Endereço MAC</th>
+				<th data-field="descricao">Descrição</th>
+				<th data-field="regiao">Região</th>
+				<th data-field="acoes">Ações</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="beacon in beacons | filter:(searchQuery || (onlyActives?{ativo: true}:true) )">
+				<td ng-bind="beacon.nome">Nome 1</td>
+				<td ng-bind="beacon.endereco_mac">A1:B2:C3:D4:E5:F6</td>
+				<td ng-bind="beacon.descricao">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+				<td ng-bind="beacon.regiao.nome">Região 1</td>
+				<td>
+					<a class="waves-effect waves-light btn" ng-href="#/beacons/{{beacon.id}}" >Editar</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<span ng-show="errorMessage">{{errorMessage}}</span>
+</div>

@@ -18,6 +18,7 @@ config(['$httpProvider', '$routeProvider', 'localStorageServiceProvider', functi
 	$routeProvider
 	.when("/login", {templateUrl: "partials/login.html", controller: "loginController"})
 	.when("/home", {templateUrl: "partials/home.html", controller: "homeController"})
+	.when("/beacons", {templateUrl: "partials/listar-beacons.html", controller: "listarBeaconsController"})
 	//.when("/drivers/:id", {templateUrl: "partials/driver.html", controller: "driverController"})
 	.otherwise({redirectTo: '/login'})
 	;
