@@ -21,6 +21,7 @@ config(['$httpProvider', '$routeProvider', 'localStorageServiceProvider', functi
 	.when("/beacons", {templateUrl: "partials/listar-beacons.html", controller: "listarBeaconsController"})
 	.when("/beacons/:id", {templateUrl: "partials/editar-beacons.html", controller: "editarBeaconsController"})
 	.when("/beacon", {templateUrl: "partials/editar-beacons.html", controller: "editarBeaconsController"})
+	.when("/regioes", {templateUrl: "partials/listar-regioes.html", controller: "listarRegioesController"})
 	.otherwise({redirectTo: '/login'})
 	;
 }])

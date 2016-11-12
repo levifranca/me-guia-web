@@ -39,10 +39,14 @@ angular.module('MeGuiaApp.controllers', [])
 	var getBeacons = function() {
 
 		var successBeacons = function(result) {
+			console.log(result);
+			
 			$scope.beacons = result.data;
 		};
 
 		var failBeacons = function(result) {
+			console.log(result);
+			
 
 			if (result.status >= 500) {
 				$scope.errorMessage = "Erro inexperado no sistema.";
@@ -75,6 +79,8 @@ angular.module('MeGuiaApp.controllers', [])
 	var getBeacon = function(id) {
 
 		var successBeacon = function(result) {
+			console.log(result);
+			
 			$scope.beacon = result.data;
 			if ($scope.regioes) {
 				$scope.beacon.regiao_id = $scope.beacon.regiao.id;
@@ -101,6 +107,8 @@ angular.module('MeGuiaApp.controllers', [])
 	var getRegioes = function() {
 
 		var successRegioes = function(result) {
+			console.log(result);
+			
 			for(var i = 0; i < result.data.length; i++) {
 				if (!result.data[i].ativo) {
 					result.data.splice(i, 1);
@@ -114,6 +122,8 @@ angular.module('MeGuiaApp.controllers', [])
 		};
 
 		var failRegioes = function(result) {
+			console.log(result);
+			
 			$scope.regioes = {};
 		};
 
@@ -162,6 +172,44 @@ angular.module('MeGuiaApp.controllers', [])
 	}
 
 	
+}])
+
+.controller('listarRegioesController', ['$scope', 'localStorageService', 'meGuiaAPIservice', '$filter', function($scope, localStorageService, meGuiaAPIservice, $filter) {
+
+	var getRegioes = function() {
+
+		var successRegioes = function(result) {
+			console.log(result);
+
+			$scope.regioes = result.data;
+
+		};
+
+		var failRegioes = function(result) {
+			console.log(result);
+			
+			if (result.status >= 500) {
+				$scope.errorMessage = "Erro inexperado no sistema.";
+			} else {
+				$scope.errorMessage = "Nenhuma região encontrada.";
+			}
+		};
+
+		meGuiaAPIservice.getRegioes(successRegioes, failRegioes);
+	};
+
+	var errorMessageExterior = localStorageService.get('errorMessageExterior');
+	if (errorMessageExterior) {
+		$scope.errorMessageExterior = errorMessageExterior;
+		localStorageService.remove('errorMessageExterior');
+	}
+	var successMessageExterior = localStorageService.get('successMessageExterior');
+	if (successMessageExterior) {
+		$scope.successMessageExterior = successMessageExterior;
+		localStorageService.remove('successMessageExterior');
+	}
+
+	getRegioes();
 }])
 
 ;

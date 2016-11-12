@@ -5,7 +5,7 @@
       <input type="checkbox" class="filled-in" id="onlyActives" checked="checked" ng-model="onlyActives" />
       <label for="onlyActives">Somentes Ativos</label>
     </p>
-    <a class="waves-effect waves-light btn" href="#/beacon">Adicionar novo</a>
+    <a class="waves-effect waves-light btn" href="#/regiao">Adicionar novo</a>
 
 </div>
 
@@ -17,26 +17,23 @@
 		<span ng-show="successMessageExterior">{{successMessageExterior}}</span>
 	</div>
 	<span ng-show="errorMessage">{{errorMessage}}</span>
-	
+
 	<table ng-hide="errorMessage">
 		<thead>
 			<tr>
 				<th data-field="nome">Nome</th>
-				<th data-field="endereco_mac">Endereço MAC</th>
 				<th data-field="descricao">Descrição</th>
-				<th data-field="regiao">Região</th>
 				<th data-field="acoes">Ações</th>
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr ng-repeat="beacon in beacons | filter:(onlyActives?{ativo: true}:undefined) | filter:searchQuery">
-				<td ng-bind="beacon.nome">Nome 1</td>
-				<td ng-bind="beacon.endereco_mac">A1:B2:C3:D4:E5:F6</td>
-				<td ng-bind="beacon.descricao">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-				<td ng-bind="beacon.regiao.nome">Região 1</td>
+			<tr ng-repeat="regiao in regioes | filter:(onlyActives?{ativo: true}:undefined) | filter:searchQuery">
+			<!--tr ng-repeat="regiao in regioes | filter:(searchQuery || (onlyActives?{ativo: true}:true) )"-->
+				<td ng-bind="regiao.nome">Nome 1</td>
+				<td ng-bind="regiao.descricao">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
 				<td>
-					<a class="waves-effect waves-light btn" ng-href="#/beacons/{{beacon.id}}" >Editar</a>
+					<a class="waves-effect waves-light btn" ng-href="#/regioes/{{regiao.id}}" >Editar</a>
 				</td>
 			</tr>
 		</tbody>
