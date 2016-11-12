@@ -183,6 +183,46 @@ angular.module('MeGuiaApp.services', [])
 		getWithBasicAuth('/regioes', success, fail);
 	};
 
+	meGuiaAPI.getRegiao = function (id, successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		getWithBasicAuth('/regiao/' + id, success, fail);
+	};
+
+	meGuiaAPI.postRegiao = function (regiao, successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		var id = regiao.id ? regiao.id : "";
+		postWithBasicAuth('/regiao/' + id, regiao, success, fail);
+	};
+
+
 	return meGuiaAPI;
 }])
 

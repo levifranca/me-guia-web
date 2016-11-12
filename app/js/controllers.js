@@ -75,7 +75,6 @@ angular.module('MeGuiaApp.controllers', [])
 
 .controller('editarBeaconsController', ['$scope', '$routeParams', 'meGuiaAPIservice', '$location', 'localStorageService', function($scope, $routeParams, meGuiaAPIservice, $location, localStorageService){
 
-
 	var getBeacon = function(id) {
 
 		var successBeacon = function(result) {
@@ -171,7 +170,6 @@ angular.module('MeGuiaApp.controllers', [])
 		getBeacon($scope.id);
 	}
 
-	
 }])
 
 .controller('listarRegioesController', ['$scope', 'localStorageService', 'meGuiaAPIservice', '$filter', function($scope, localStorageService, meGuiaAPIservice, $filter) {
@@ -210,6 +208,72 @@ angular.module('MeGuiaApp.controllers', [])
 	}
 
 	getRegioes();
+}])
+
+.controller('editarRegioesController', ['$scope', '$routeParams', 'meGuiaAPIservice', 'localStorageService', '$location', function($scope, $routeParams, meGuiaAPIservice, localStorageService, $location){
+	var getRegiao = function(id) {
+
+		var successRegiao = function(result) {
+			console.log(result);
+			
+			$scope.regiao = result.data;
+		};
+
+		var failRegiao = function(result) {
+			console.log(result);
+
+			var errorMessage = "";
+			if (result.status >= 500) {
+				errorMessage = "Erro inexperado no sistema.";
+			} else {
+				errorMessage = "Sistema não pode realizar a ação.";
+			}
+
+			localStorageService.set('errorMessageExterior', errorMessage);
+			$location.url('/regioes');
+		};
+
+		meGuiaAPIservice.getRegiao(id, successRegiao, failRegiao);
+	};
+
+	$scope.submit = function() {
+
+		var successRegiaoPost = function(result) {
+			console.log(result);
+
+			var successMessageExterior = "Região inserida com sucesso!";
+			localStorageService.set('successMessageExterior', successMessageExterior);
+			$location.url('/regioes');
+		};
+
+		var failRegiaoPost = function(result) {
+			console.log(result);
+
+			if (result.status >= 500) {
+				errorMessage = "Erro inexperado no sistema.";
+			} else {
+				$scope.errorMessage = result.dataAsJson().mensagem;
+			}
+
+		};
+
+		var loggedUserLogin = localStorageService.get('loggedUser').login;
+		if ($scope.id) {
+			$scope.regiao.login_modificador = loggedUserLogin;
+		} else {
+			$scope.regiao.login_criador = loggedUserLogin;
+		}
+
+		console.log($scope.regiao);
+
+		meGuiaAPIservice.postRegiao($scope.regiao, successRegiaoPost, failRegiaoPost);
+	};
+
+
+	$scope.id = $routeParams.id;
+	if ($scope.id) {
+		getRegiao($scope.id);
+	}
 }])
 
 ;
