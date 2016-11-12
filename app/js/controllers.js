@@ -34,7 +34,7 @@ angular.module('MeGuiaApp.controllers', [])
 	$scope.nome = localStorageService.get('loggedUser').nome;
 }])
 
-.controller('listarBeaconsController', ['$scope', 'meGuiaAPIservice', '$filter', function($scope, meGuiaAPIservice,  $filter){
+.controller('listarBeaconsController', ['$scope', 'meGuiaAPIservice', '$filter', 'localStorageService', function($scope, meGuiaAPIservice, $filter, localStorageService){
 
 	var getBeacons = function() {
 
@@ -49,17 +49,119 @@ angular.module('MeGuiaApp.controllers', [])
 			} else {
 				$scope.errorMessage = "Nenhum beacon encontrado.";
 			}
-			if (result.st)
-			$scope.errorMessage = "";
 		};
 
 		meGuiaAPIservice.getBeacons(successBeacons, failBeacons);
 	};
 
-
+	var errorMessageExterior = localStorageService.get('errorMessageExterior');
+	if (errorMessageExterior) {
+		$scope.errorMessageExterior = errorMessageExterior;
+		localStorageService.remove('errorMessageExterior');
+	}
+	var successMessageExterior = localStorageService.get('successMessageExterior');
+	if (successMessageExterior) {
+		$scope.successMessageExterior = successMessageExterior;
+		localStorageService.remove('successMessageExterior');
+	}
 
 	getBeacons();
 
+}])
+
+.controller('editarBeaconsController', ['$scope', '$routeParams', 'meGuiaAPIservice', '$location', 'localStorageService', function($scope, $routeParams, meGuiaAPIservice, $location, localStorageService){
+
+
+	var getBeacon = function(id) {
+
+		var successBeacon = function(result) {
+			$scope.beacon = result.data;
+			if ($scope.regioes) {
+				$scope.beacon.regiao_id = $scope.beacon.regiao.id;
+			}
+		};
+
+		var failBeacon = function(result) {
+			console.log(result);
+
+			var errorMessage = "";
+			if (result.status >= 500) {
+				errorMessage = "Erro inexperado no sistema.";
+			} else {
+				errorMessage = "Sistema não pode realizar a ação.";
+			}
+
+			localStorageService.set('errorMessageExterior', errorMessage);
+			$location.url('/beacons');
+		};
+
+		meGuiaAPIservice.getBeacon(id, successBeacon, failBeacon);
+	};
+
+	var getRegioes = function() {
+
+		var successRegioes = function(result) {
+			for(var i = 0; i < result.data.length; i++) {
+				if (!result.data[i].ativo) {
+					result.data.splice(i, 1);
+				}
+			}
+
+			$scope.regioes = result.data;
+			if ($scope.beacon) {
+				$scope.beacon.regiao_id = $scope.beacon.regiao.id;
+			}
+		};
+
+		var failRegioes = function(result) {
+			$scope.regioes = {};
+		};
+
+		meGuiaAPIservice.getRegioes(successRegioes, failRegioes);
+	};
+
+
+	$scope.submit = function() {
+
+		var successBeaconPost = function(result) {
+			console.log(result);
+
+			var successMessageExterior = "Beacon inserido com sucesso!";
+			localStorageService.set('successMessageExterior', successMessageExterior);
+			$location.url('/beacons');
+		};
+
+		var failBeaconPost = function(result) {
+			console.log(result);
+
+			if (result.status >= 500) {
+				errorMessage = "Erro inexperado no sistema.";
+			} else {
+				$scope.errorMessage = result.dataAsJson().mensagem;
+			}
+
+		};
+
+		var loggedUserLogin = localStorageService.get('loggedUser').login;
+		if ($scope.id) {
+			$scope.beacon.login_modificador = loggedUserLogin;
+		} else {
+			$scope.beacon.login_criador = loggedUserLogin;
+		}
+
+		console.log($scope.beacon);
+
+		meGuiaAPIservice.postBeacon($scope.beacon, successBeaconPost, failBeaconPost);
+	};
+
+	getRegioes();
+
+	$scope.id = $routeParams.id;
+	if ($scope.id) {
+		getBeacon($scope.id);
+	}
+
+	
 }])
 
 ;

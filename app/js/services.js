@@ -45,6 +45,21 @@ angular.module('MeGuiaApp.services', [])
 
 	};
 	
+	var postWithBasicAuth = function(path, data, success, fail) {
+
+		var userPassBase64 = localStorageService.get('userPassBase64');
+
+		if (!userPassBase64) {
+			console.error('User is not logged in!');
+			var result = setResult(401, {error: 'User is not logged in!'})
+
+			fail && fail(result);
+		}
+
+		var headers = { 'Authorization': 'Basic ' + userPassBase64 };
+		$http.post(ME_GUIA_API_ADDRESS + path, data,{headers: headers, transformResponse: undefined}).then(success, fail);
+
+	};
 	
 	// Public object methods definition
 	meGuiaAPI.test = function(user, pass) {
@@ -62,7 +77,7 @@ angular.module('MeGuiaApp.services', [])
 		};
 
 		var headers = { 'Authorization': 'Basic ' + userPassBase64 };
-		$http.get('http://localhost:8080/me-guia-server/index', {headers: headers, transformResponse: undefined}).then(success, fail);
+		$http.get(ME_GUIA_API_ADDRESS = '/index', {headers: headers, transformResponse: undefined}).then(success, fail);
 	};
 
 
@@ -110,6 +125,63 @@ angular.module('MeGuiaApp.services', [])
 		getWithBasicAuth('/beacons', success, fail);
 	};
 
+	meGuiaAPI.getBeacon = function (id, successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		getWithBasicAuth('/beacon/' + id, success, fail);
+	};
+
+	meGuiaAPI.postBeacon = function (beacon, successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		var id = beacon.id ? beacon.id : "";
+		postWithBasicAuth('/beacon/' + id, beacon, success, fail);
+	};
+
+	meGuiaAPI.getRegioes = function (successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		getWithBasicAuth('/regioes', success, fail);
+	};
 
 	return meGuiaAPI;
 }])

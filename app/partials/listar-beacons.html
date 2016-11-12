@@ -3,13 +3,20 @@
 	<a class="waves-effect waves-light btn" href="" ng-click="searchQuery=query">Buscar</a>
 	<p>
       <input type="checkbox" class="filled-in" id="onlyActives" checked="checked" ng-model="onlyActives" />
-      <label for="somente-ativos">Somentes Ativos</label>
+      <label for="onlyActives">Somentes Ativos</label>
     </p>
-    <a class="waves-effect waves-light btn" href="">Adicionar novo</a>
+    <a class="waves-effect waves-light btn" href="#/beacon">Adicionar novo</a>
 
 </div>
 
 <div>
+	<div>
+		<span ng-show="errorMessageExterior">{{errorMessageExterior}}</span>
+	</div>
+	<div>
+		<span ng-show="successMessageExterior">{{successMessageExterior}}</span>
+	</div>
+	<span ng-show="errorMessage">{{errorMessage}}</span>
 	<table ng-hide="errorMessage">
 		<thead>
 			<tr>
@@ -33,5 +40,4 @@
 			</tr>
 		</tbody>
 	</table>
-	<span ng-show="errorMessage">{{errorMessage}}</span>
 </div>
