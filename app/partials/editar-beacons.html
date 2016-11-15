@@ -32,12 +32,12 @@
 				<div class="file-field input-field">
 					<div class="btn">
 						<span>Arquivo</span>
-						<input type="file">
+						<input type="file" name="audioFile" id="beaconAudioFile">
 					</div>
 					<div class="file-path-wrapper">
 						<input class="file-path validate" type="text" id="mensagem_sonora" ng-model="beacon.audio">
 						<label for="mensagem_sonora">Mensagem Sonora</label>
-						<a class="btn-floating btn-large waves-effect waves-light red" href="" ng-click="removeAudio()"><i class="material-icons">remove</i></a>
+						<a class="btn-floating btn-large waves-effect waves-light red" href="" ng-click="removeAudioFunction()"><i class="material-icons">remove</i></a>
 					</div>
 				</div>
 			</div>

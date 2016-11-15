@@ -124,38 +124,26 @@ angular.module('MeGuiaApp.controllers', [])
 		meGuiaAPIservice.getRegioes(successRegioes, failRegioes);
 	};
 
-	var redirectSuccess = function() {
-		var successMessageExterior = "Beacon inserido com sucesso!";
-		localStorageService.set('successMessageExterior', successMessageExterior);
-		$location.url('/beacons');
-	};
 
+
+	var hasFile = function() {
+		var e = window.document.getElementById("beaconAudioFile");
+		return e.files && e.files.length > 0;
+	};
 
 	$scope.submit = function() {
 
-		var successBeaconPost = function(result) {
+		var audioFile;
+		if (hasFile()) {
+			audioFile = window.document.getElementById("beaconAudioFile").files[0];
+		}
+
+		var redirectSuccess = function(result) {
 			console.log(result);
-
-			var successDelete = function(result) {
-				console.log(result);
-
-				redirectSuccess();
-			};
-
-			var failDelete = function(result) {
-				console.log(result);
-
-				if (result.status >= 500) {
-					errorMessage = "Erro inexperado no sistema.";
-				} else {
-					$scope.errorMessage = result.dataAsJson().mensagem;
-				}
-
-			};
-
-			if ($scope.removeAudio) {
-				meGuiaAPIservice.deleteBeaconAudio($scope.beacon.id, successDelete, failDelete);
-			}
+			
+			var successMessageExterior = "Beacon inserido com sucesso!";
+			localStorageService.set('successMessageExterior', successMessageExterior);
+			$location.url('/beacons');
 		};
 
 		var failBeaconPost = function(result) {
@@ -167,6 +155,16 @@ angular.module('MeGuiaApp.controllers', [])
 				$scope.errorMessage = result.dataAsJson().mensagem;
 			}
 
+		};
+
+		var successBeaconPost = function(result) {
+			if (audioFile) {
+				meGuiaAPIservice.postBeaconAudio($scope.beacon.id, audioFile, redirectSuccess, failBeaconPost);
+			} else if ($scope.removeAudio) {
+				meGuiaAPIservice.deleteBeaconAudio($scope.beacon.id, redirectSuccess, failBeaconPost);
+			} else {
+				redirectSuccess && redirectSuccess();
+			}
 		};
 
 		var loggedUserLogin = localStorageService.get('loggedUser').login;
@@ -181,7 +179,10 @@ angular.module('MeGuiaApp.controllers', [])
 		meGuiaAPIservice.postBeacon($scope.beacon, successBeaconPost, failBeaconPost);
 	};
 
-	$scope.removeAudio = function() {
+	$scope.removeAudioFunction = function() {
+		if (!$scope.beacon.audio) {
+			return;
+		}
 		$scope.removeAudio = true;
 		$scope.beacon.audio = "";
 	};

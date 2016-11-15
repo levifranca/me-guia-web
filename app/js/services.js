@@ -199,6 +199,44 @@ angular.module('MeGuiaApp.services', [])
 		deleteWithBasicAuth('/beacon/' + beaconId + '/audio', success, fail);
 	};
 
+	meGuiaAPI.postBeaconAudio = function (beaconId, audioFile, successCallback, failCallback) {
+		var userPassBase64 = localStorageService.get('userPassBase64');
+
+		if (!userPassBase64) {
+			console.error('User is not logged in!');
+			var result = setResult(401, {error: 'User is not logged in!'})
+
+			fail && fail(result);
+		}
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		var fd = new FormData();
+		fd.append("file", audioFile);
+
+		var path = '/beacon/' + beaconId + '/audio';
+		$http.post(ME_GUIA_API_ADDRESS + path, fd, {
+					headers: {'Content-Type': undefined, 
+							  'Authorization': 'Basic ' + userPassBase64 },
+					transformRequest: angular.identity,
+					transformResponse: undefined
+					})
+			.success( success )
+			.error( fail );
+	};
+
 	meGuiaAPI.getRegioes = function (successCallback, failCallback) {
 
 		var success = function(resp) {
