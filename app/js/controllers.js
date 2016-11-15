@@ -1,6 +1,5 @@
 angular.module('MeGuiaApp.controllers', [])
 .controller('loginController', ['$scope', '$location', 'meGuiaAPIservice', function($scope, $location, meGuiaAPIservice) {
-
 	$scope.signIn = function() {
 
 
@@ -27,7 +26,6 @@ angular.module('MeGuiaApp.controllers', [])
 		meGuiaAPIservice.login($scope.login, $scope.pass, success, fail);
 
 	};
- 
 }])
 
 .controller('homeController', ['$scope', 'localStorageService', function($scope, localStorageService) {
@@ -35,7 +33,6 @@ angular.module('MeGuiaApp.controllers', [])
 }])
 
 .controller('listarBeaconsController', ['$scope', 'meGuiaAPIservice', '$filter', 'localStorageService', function($scope, meGuiaAPIservice, $filter, localStorageService){
-
 	var getBeacons = function() {
 
 		var successBeacons = function(result) {
@@ -70,11 +67,9 @@ angular.module('MeGuiaApp.controllers', [])
 	}
 
 	getBeacons();
-
 }])
 
 .controller('editarBeaconsController', ['$scope', '$routeParams', 'meGuiaAPIservice', '$location', 'localStorageService', function($scope, $routeParams, meGuiaAPIservice, $location, localStorageService){
-
 	var getBeacon = function(id) {
 
 		var successBeacon = function(result) {
@@ -129,15 +124,38 @@ angular.module('MeGuiaApp.controllers', [])
 		meGuiaAPIservice.getRegioes(successRegioes, failRegioes);
 	};
 
+	var redirectSuccess = function() {
+		var successMessageExterior = "Beacon inserido com sucesso!";
+		localStorageService.set('successMessageExterior', successMessageExterior);
+		$location.url('/beacons');
+	};
+
 
 	$scope.submit = function() {
 
 		var successBeaconPost = function(result) {
 			console.log(result);
 
-			var successMessageExterior = "Beacon inserido com sucesso!";
-			localStorageService.set('successMessageExterior', successMessageExterior);
-			$location.url('/beacons');
+			var successDelete = function(result) {
+				console.log(result);
+
+				redirectSuccess();
+			};
+
+			var failDelete = function(result) {
+				console.log(result);
+
+				if (result.status >= 500) {
+					errorMessage = "Erro inexperado no sistema.";
+				} else {
+					$scope.errorMessage = result.dataAsJson().mensagem;
+				}
+
+			};
+
+			if ($scope.removeAudio) {
+				meGuiaAPIservice.deleteBeaconAudio($scope.beacon.id, successDelete, failDelete);
+			}
 		};
 
 		var failBeaconPost = function(result) {
@@ -163,13 +181,17 @@ angular.module('MeGuiaApp.controllers', [])
 		meGuiaAPIservice.postBeacon($scope.beacon, successBeaconPost, failBeaconPost);
 	};
 
+	$scope.removeAudio = function() {
+		$scope.removeAudio = true;
+		$scope.beacon.audio = "";
+	};
+
 	getRegioes();
 
 	$scope.id = $routeParams.id;
 	if ($scope.id) {
 		getBeacon($scope.id);
 	}
-
 }])
 
 .controller('listarRegioesController', ['$scope', 'localStorageService', 'meGuiaAPIservice', '$filter', function($scope, localStorageService, meGuiaAPIservice, $filter) {
@@ -488,7 +510,6 @@ angular.module('MeGuiaApp.controllers', [])
 		$scope.isLoggedUser = $scope.login === loggedUser.login;
 		getCadastrador($scope.login);
 	}
-
 }])
 
 ;
