@@ -18,12 +18,19 @@ config(['$httpProvider', '$routeProvider', 'localStorageServiceProvider', functi
 	$routeProvider
 	.when("/login", {templateUrl: "partials/login.html", controller: "loginController"})
 	.when("/home", {templateUrl: "partials/home.html", controller: "homeController"})
+
 	.when("/beacons", {templateUrl: "partials/listar-beacons.html", controller: "listarBeaconsController"})
 	.when("/beacons/:id", {templateUrl: "partials/editar-beacons.html", controller: "editarBeaconsController"})
 	.when("/beacon", {templateUrl: "partials/editar-beacons.html", controller: "editarBeaconsController"})
+
 	.when("/regioes", {templateUrl: "partials/listar-regioes.html", controller: "listarRegioesController"})
 	.when("/regioes/:id", {templateUrl: "partials/editar-regioes.html", controller: "editarRegioesController"})
 	.when("/regiao", {templateUrl: "partials/editar-regioes.html", controller: "editarRegioesController"})
+
+	.when("/cadastradores", {templateUrl: "partials/listar-cadastradores.html", controller: "listarCadastradoresController"})
+	.when("/cadastradores/:login", {templateUrl: "partials/editar-cadastradores.html", controller: "editarCadastradoresController"})
+	.when("/cadastrador", {templateUrl: "partials/editar-cadastradores.html", controller: "editarCadastradoresController"})
+
 	.otherwise({redirectTo: '/login'})
 	;
 }])

@@ -222,6 +222,82 @@ angular.module('MeGuiaApp.services', [])
 		postWithBasicAuth('/regiao/' + id, regiao, success, fail);
 	};
 
+	meGuiaAPI.getCadastradoresTipo = function (successCallback, failCallback) {
+
+		var resultData = [{
+			id: 0,
+			nome: 'Administrador'
+		},
+		{
+			id: 1,
+			nome: 'Comum'
+		}];
+
+		var result = setResult(200, resultData);
+
+		successCallback && successCallback(result);
+	};
+
+	meGuiaAPI.getCadastradores = function (successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		getWithBasicAuth('/cadastradores', success, fail);
+	};
+
+	meGuiaAPI.getCadastrador = function (login, successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		getWithBasicAuth('/cadastrador/' + login, success, fail);
+	};
+
+	meGuiaAPI.postCadastrador = function (cadastrador, isUpdate, successCallback, failCallback) {
+
+		var success = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			successCallback && successCallback(result);
+		};
+
+		var fail = function(resp) {
+			console.log(resp);
+
+			var result = setResult(resp.status, resp.data);
+			failCallback && failCallback(result);
+		};
+
+		if (isUpdate) {
+			postWithBasicAuth('/cadastrador/' + cadastrador.login, cadastrador, success, fail);
+		} else {
+			postWithBasicAuth('/cadastrador', cadastrador, success, fail);
+		}
+	};
 
 	return meGuiaAPI;
 }])

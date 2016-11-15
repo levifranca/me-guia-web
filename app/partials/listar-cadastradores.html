@@ -1,0 +1,42 @@
+<div>
+	<input placeholder="Placeholder" id="busca" type="text" class="validate" ng-model="query">
+	<a class="waves-effect waves-light btn" href="" ng-click="searchQuery=query">Buscar</a>
+	<p>
+      <input type="checkbox" class="filled-in" id="onlyActives" checked="checked" ng-model="onlyActives" />
+      <label for="onlyActives">Somentes Ativos</label>
+    </p>
+    <a class="waves-effect waves-light btn" href="#/cadastrador">Adicionar novo</a>
+
+</div>
+
+<div>
+	<div>
+		<span ng-show="errorMessageExterior">{{errorMessageExterior}}</span>
+	</div>
+	<div>
+		<span ng-show="successMessageExterior">{{successMessageExterior}}</span>
+	</div>
+	<span ng-show="errorMessage">{{errorMessage}}</span>
+	
+	<table ng-hide="errorMessage">
+		<thead>
+			<tr>
+				<th data-field="nome">Nome</th>
+				<th data-field="login">Login</th>
+				<th data-field="tipo">Tipo</th>
+				<th data-field="acoes">Ações</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="cadastrador in cadastradores | filter:(onlyActives?{ativo: true}:undefined) | filter:searchQuery">
+				<td ng-bind="cadastrador.nome">Nome 1</td>
+				<td ng-bind="cadastrador.login">nome1</td>
+				<td ng-bind="cadastrador.tipoString">Administrador</td>
+				<td>
+					<a class="waves-effect waves-light btn" ng-href="#/cadastradores/{{cadastrador.login}}" >Editar</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -3,7 +3,7 @@
 		<div>
 			<a href="#">Me Guia App</a>
 			<ul ng-show="$ctrl.loggedUser.ativo">
-				<li><a href="#">Alterar Senha</a></li>
+				<li><a ng-href="#/cadastradores/{{$ctrl.loggedUser.login}}">Alterar Senha</a></li>
 				<li><a href="#" ng-click="$ctrl.loggoff()">Sair</a></li>
 			</ul>
 			<ul class="tabs tabs-transparent" ng-show="$ctrl.loggedUser.ativo">
