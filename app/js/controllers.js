@@ -1,8 +1,8 @@
 angular.module('MeGuiaApp.controllers', [])
-.controller('loginController', ['$scope', '$location', 'meGuiaAPIservice', function($scope, $location, meGuiaAPIservice) {
+.controller('loginController', ['$scope', '$location', 'meGuiaAPIservice', '$rootScope', function($scope, $location, meGuiaAPIservice, $rootScope) {
+	$rootScope.activeTab = '';
+
 	$scope.signIn = function() {
-
-
 
 		var success = function(result) {
 			$scope.errorMessage = "";
@@ -28,11 +28,15 @@ angular.module('MeGuiaApp.controllers', [])
 	};
 }])
 
-.controller('homeController', ['$scope', 'localStorageService', function($scope, localStorageService) {
+.controller('homeController', ['$scope', 'localStorageService', '$rootScope', function($scope, localStorageService, $rootScope) {
+	$rootScope.activeTab = '';
+	
 	$scope.nome = localStorageService.get('loggedUser').nome;
 }])
 
-.controller('listarBeaconsController', ['$scope', 'meGuiaAPIservice', '$filter', 'localStorageService', function($scope, meGuiaAPIservice, $filter, localStorageService){
+.controller('listarBeaconsController', ['$scope', 'meGuiaAPIservice', '$filter', 'localStorageService', '$rootScope', function($scope, meGuiaAPIservice, $filter, localStorageService, $rootScope){
+	$rootScope.activeTab = 'beacons';
+
 	var getBeacons = function() {
 
 		var successBeacons = function(result) {
@@ -69,7 +73,9 @@ angular.module('MeGuiaApp.controllers', [])
 	getBeacons();
 }])
 
-.controller('editarBeaconsController', ['$scope', '$routeParams', 'meGuiaAPIservice', '$location', 'localStorageService', function($scope, $routeParams, meGuiaAPIservice, $location, localStorageService){
+.controller('editarBeaconsController', ['$scope', '$routeParams', 'meGuiaAPIservice', '$location', 'localStorageService', '$rootScope', '$timeout', function($scope, $routeParams, meGuiaAPIservice, $location, localStorageService, $rootScope, $timeout){
+	$rootScope.activeTab = 'beacons';
+
 	var getBeacon = function(id) {
 
 		var successBeacon = function(result) {
@@ -79,6 +85,10 @@ angular.module('MeGuiaApp.controllers', [])
 			if ($scope.regioes) {
 				$scope.beacon.regiao_id = $scope.beacon.regiao.id;
 			}
+
+			$timeout(function(){
+				Materialize.updateTextFields();
+			}, 100);
 		};
 
 		var failBeacon = function(result) {
@@ -113,6 +123,10 @@ angular.module('MeGuiaApp.controllers', [])
 			if ($scope.beacon) {
 				$scope.beacon.regiao_id = $scope.beacon.regiao.id;
 			}
+
+			$timeout(function(){
+				$('select').material_select();
+			}, 100);
 		};
 
 		var failRegioes = function(result) {
@@ -195,7 +209,8 @@ angular.module('MeGuiaApp.controllers', [])
 	}
 }])
 
-.controller('listarRegioesController', ['$scope', 'localStorageService', 'meGuiaAPIservice', '$filter', function($scope, localStorageService, meGuiaAPIservice, $filter) {
+.controller('listarRegioesController', ['$scope', 'localStorageService', 'meGuiaAPIservice', '$filter', '$rootScope', function($scope, localStorageService, meGuiaAPIservice, $filter, $rootScope) {
+	$rootScope.activeTab = 'regioes';
 
 	var getRegioes = function() {
 
@@ -233,13 +248,18 @@ angular.module('MeGuiaApp.controllers', [])
 	getRegioes();
 }])
 
-.controller('editarRegioesController', ['$scope', '$routeParams', 'meGuiaAPIservice', 'localStorageService', '$location', function($scope, $routeParams, meGuiaAPIservice, localStorageService, $location){
+.controller('editarRegioesController', ['$scope', '$routeParams', 'meGuiaAPIservice', 'localStorageService', '$location', '$rootScope', '$timeout', function($scope, $routeParams, meGuiaAPIservice, localStorageService, $location, $rootScope, $timeout){
+	$rootScope.activeTab = 'regioes';
+
 	var getRegiao = function(id) {
 
 		var successRegiao = function(result) {
 			console.log(result);
 			
 			$scope.regiao = result.data;
+			$timeout(function(){
+				Materialize.updateTextFields();
+			}, 100);
 		};
 
 		var failRegiao = function(result) {
@@ -299,7 +319,9 @@ angular.module('MeGuiaApp.controllers', [])
 	}
 }])
 
-.controller('listarCadastradoresController', ['$scope', 'localStorageService', 'meGuiaAPIservice', function($scope, localStorageService, meGuiaAPIservice){
+.controller('listarCadastradoresController', ['$scope', 'localStorageService', 'meGuiaAPIservice', '$rootScope', function($scope, localStorageService, meGuiaAPIservice, $rootScope){
+	$rootScope.activeTab = 'cadastradores';
+
 	var cadastradoresTipo = [];
 
 	var getCadastradoresTipo = function() {
@@ -366,7 +388,9 @@ angular.module('MeGuiaApp.controllers', [])
 	getCadastradores();
 }])
 
-.controller('editarCadastradoresController', ['$scope', 'meGuiaAPIservice', '$routeParams', 'localStorageService', '$location', '$base64', function($scope, meGuiaAPIservice, $routeParams, localStorageService, $location, $base64){
+.controller('editarCadastradoresController', ['$scope', 'meGuiaAPIservice', '$routeParams', 'localStorageService', '$location', '$base64', '$rootScope', '$timeout', function($scope, meGuiaAPIservice, $routeParams, localStorageService, $location, $base64, $rootScope, $timeout){
+	$rootScope.activeTab = 'cadastradores';
+
 	var loggedUser = localStorageService.get('loggedUser');
 
 	var getCadastrador = function(login) {
@@ -375,6 +399,10 @@ angular.module('MeGuiaApp.controllers', [])
 			console.log(result);
 			
 			$scope.cadastrador = result.data;
+
+			$timeout(function(){
+				Materialize.updateTextFields();
+			}, 100);
 
 		};
 
@@ -405,6 +433,9 @@ angular.module('MeGuiaApp.controllers', [])
 			}
 			$scope.cadastradoresTipo = result.data;
 
+			$timeout(function(){
+				$('select').material_select();
+			}, 100);
 		};
 
 		var failCadastradorTipo = function(result) {
@@ -434,6 +465,11 @@ angular.module('MeGuiaApp.controllers', [])
 
 	$scope.submit = function() {
 
+		if (!$scope.cadastrador || !$scope.cadastrador.login) {
+			$scope.errorMessage = "Digite o login.";
+			return;
+		}
+
 		var successCadastradorPost = function(result) {
 			console.log(result);
 
@@ -450,7 +486,7 @@ angular.module('MeGuiaApp.controllers', [])
 					console.log(result);
 
 					if (result.status >= 500) {
-						errorMessage = "Erro inexperado no sistema.";
+						$scope.errorMessage = "Erro inexperado no sistema.";
 					} else {
 						$scope.errorMessage = result.dataAsJson().mensagem;
 					}
@@ -470,7 +506,7 @@ angular.module('MeGuiaApp.controllers', [])
 			console.log(result);
 
 			if (result.status >= 500) {
-				errorMessage = "Erro inexperado no sistema.";
+				$scope.errorMessage = "Erro inexperado no sistema.";
 			} else {
 				$scope.errorMessage = result.dataAsJson().mensagem;
 			}
@@ -478,11 +514,11 @@ angular.module('MeGuiaApp.controllers', [])
 		};
 
 		if (!$scope.isUpdate) {
-			if ($scope.novaSenha === $scope.confirmacaoSenha) {
+			if ($scope.novaSenha && $scope.confirmacaoSenha && $scope.novaSenha === $scope.confirmacaoSenha) {
 				$scope.cadastrador.senha = $scope.novaSenha;
 			}
 		} else if (isChangePassword() && confirmCurrentPass($scope.atualSenha)) {
-			if ($scope.novaSenha === $scope.confirmacaoSenha) {
+			if ($scope.novaSenha && $scope.confirmacaoSenha && $scope.novaSenha === $scope.confirmacaoSenha) {
 				$scope.cadastrador.senha_nova = $scope.novaSenha;
 				$scope.cadastrador.senha_atual = $scope.atualSenha;
 			}
@@ -490,6 +526,7 @@ angular.module('MeGuiaApp.controllers', [])
 
 
 		var loggedUserLogin = loggedUser.login;
+
 		if ($scope.login) {
 			$scope.cadastrador.login_modificador = loggedUserLogin;
 		} else {

@@ -1,4 +1,5 @@
 angular.module('MeGuiaApp', [
+	'MeGuiaApp.directives',
 	'MeGuiaApp.components',
 	'MeGuiaApp.controllers',
 	'MeGuiaApp.services',
