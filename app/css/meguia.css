@@ -20,14 +20,18 @@ nav {
     background-color: #303f9f;
 }
 
-input[type=text]:focus:not([readonly]), input[type=text].valid,
-textarea.materialize-textarea:focus:not([readonly]) {
+input[type=text]:focus:not([readonly]), 
+input[type=text].valid,
+textarea.materialize-textarea:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=password].valid {
 	border-bottom: 1px solid #303f9f;
     box-shadow: 0 1px 0 0 #303f9f;
 }
 
 textarea.materialize-textarea:focus:not([readonly]) + label,
-input[type=text]:focus:not([readonly]) + label {
+input[type=text]:focus:not([readonly]) + label,
+input[type=password]:focus:not([readonly]) + label {
     color: #303f9f;
 }
 

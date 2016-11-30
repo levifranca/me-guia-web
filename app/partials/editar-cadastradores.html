@@ -42,7 +42,7 @@
 
 			<div ng-hide="isUpdate" class="col s12">
 				<div class="input-field col s12">
-					<select ng-model="cadastrador.tipo" ng-options="tipo.id as tipo.nome for tipo in cadastradoresTipo">
+					<select ng-model="cadastrador.tipo" ng-options="tipo.id as tipo.nome for tipo in cadastradoresTipo" my-material-select>
 						<option value="" ng-hide="(cadastrador.tipo || cadastrador.tipo === 0)">Escolha uma opção</option>
 					</select>
 					<label>Tipo</label>
