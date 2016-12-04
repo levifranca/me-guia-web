@@ -2,6 +2,10 @@ nav {
 	background-color: #3f51b5; --indigo
 }
 
+nav .brand-logo {
+	padding-left: 12px;
+}
+
 .btn {
 	background-color: #303f9f;
 }
